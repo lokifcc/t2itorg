@@ -63,7 +63,9 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:500;
   display:flex;align-items:center;justify-content:space-between;
   padding:1.4rem 5%;
-  mix-blend-mode:normal;
+  background:rgba(8,8,8,0.88);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
 }
 nav::after{
   content:'';position:absolute;bottom:0;left:5%;right:5%;
@@ -76,7 +78,7 @@ nav::after{
 .nav-logo span{color:var(--muted)}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
 .nav-links a{
-  color:var(--muted);text-decoration:none;font-size:0.78rem;
+  color:var(--muted);text-decoration:none;font-size:0.9rem;
   font-family:var(--font-mono);letter-spacing:0.1em;text-transform:uppercase;
   transition:color 0.15s;position:relative;
 }
@@ -87,7 +89,7 @@ nav::after{
 .nav-links a:hover{color:var(--hi)}
 .nav-links a:hover::after{width:100%}
 .nav-btn{
-  font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.1em;
+  font-family:var(--font-mono);font-size:0.9rem;letter-spacing:0.1em;
   text-transform:uppercase;color:var(--bg);background:var(--hi);
   padding:0.6rem 1.4rem;text-decoration:none;
   clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
@@ -113,7 +115,7 @@ nav::after{
 .hero-left{position:relative;z-index:3}
 
 .hero-eyebrow{
-  font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);
+  font-family:var(--font-mono);font-size:0.96rem;color:var(--muted);
   letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.8rem;
   display:flex;align-items:center;gap:1rem;
 }
@@ -134,7 +136,7 @@ nav::after{
 .hero h1 .hi{color:var(--hi)}
 
 .hero-sub{
-  color:var(--muted);font-size:0.95rem;line-height:1.8;
+  color:var(--muted);font-size:1.05rem;line-height:1.8;
   max-width:420px;margin-bottom:2.5rem;
   border-left:2px solid var(--border);padding-left:1.2rem;
 }
@@ -177,7 +179,7 @@ nav::after{
 .term-dot{width:9px;height:9px;border-radius:50%}
 .td-r{background:#ff3c3c}.td-y{background:#ffb938}.td-g{background:#00c853}
 .term-title{
-  font-size:0.7rem;color:var(--muted);margin-left:0.5rem;letter-spacing:0.1em;
+  font-size:0.83rem;color:var(--muted);margin-left:0.5rem;letter-spacing:0.1em;
 }
 .term-body{padding:1.4rem;line-height:1.8;min-height:340px}
 .term-line{display:block;white-space:pre}
@@ -210,18 +212,18 @@ nav::after{
 .ticker-inner:hover{animation-play-state:paused}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .tick-item{
-  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;
+  font-family:var(--font-mono);font-size:0.96rem;letter-spacing:0.12em;
   text-transform:uppercase;color:var(--muted);padding:0 2.5rem;
   display:inline-flex;align-items:center;gap:0.8rem;
 }
-.tick-item::before{content:'◆';color:var(--hi);font-size:0.5rem}
+.tick-item::before{content:'◆';color:var(--hi);font-size:0.9rem}
 
 /* ─── SECTION WRAPPER ─── */
 .section{padding:7rem 5%}
 .section.dark{background:var(--s1)}
 
 .s-label{
-  font-family:var(--font-mono);font-size:0.7rem;color:var(--hi);
+  font-family:var(--font-mono);font-size:0.83rem;color:var(--hi);
   letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.8rem;
   display:flex;align-items:center;gap:0.6rem;
 }
@@ -237,7 +239,7 @@ h2{
   -webkit-text-stroke:1px var(--text);
   color:transparent;
 }
-.section-sub{color:var(--muted);font-size:0.95rem;line-height:1.75;max-width:480px}
+.section-sub{color:var(--muted);font-size:1.05rem;line-height:1.75;max-width:480px}
 
 /* ─── SERVICES ─── */
 .srv-grid{
@@ -259,14 +261,14 @@ h2{
 .srv-card:hover{background:var(--s2)}
 .srv-card:hover::before{height:100%}
 .srv-num{
-  font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);
+  font-family:var(--font-mono);font-size:0.9rem;color:var(--muted);
   letter-spacing:0.1em;margin-bottom:1.2rem;
 }
 .srv-card h3{font-size:1.05rem;font-weight:700;margin-bottom:0.7rem;letter-spacing:-0.02em}
-.srv-card p{color:var(--muted);font-size:0.85rem;line-height:1.7}
+.srv-card p{color:var(--muted);font-size:0.96rem;line-height:1.7}
 .srv-tag{
   display:inline-block;margin-top:1.2rem;
-  font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;
+  font-family:var(--font-mono);font-size:0.9rem;letter-spacing:0.1em;
   text-transform:uppercase;color:var(--hi);
   border:1px solid rgba(200,255,0,0.25);padding:0.25rem 0.6rem;
 }
@@ -281,15 +283,15 @@ h2{
 
 .diagram-box{
   border:1px solid var(--border);
-  font-family:var(--font-mono);font-size:0.75rem;
+  font-family:var(--font-mono);font-size:0.87rem;
 }
 .diag-header{
   background:var(--s2);padding:0.7rem 1rem;
-  font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;
+  font-size:0.9rem;letter-spacing:0.12em;text-transform:uppercase;
   color:var(--muted);border-bottom:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:center;
 }
-.diag-status{color:var(--hi);font-size:0.6rem}
+.diag-status{color:var(--hi);font-size:0.74rem}
 .diag-body{padding:1.6rem}
 
 .flow-row{
@@ -297,17 +299,17 @@ h2{
 }
 .flow-node{
   border:1px solid var(--border);padding:0.5rem 0.8rem;
-  font-size:0.7rem;white-space:nowrap;
+  font-size:0.83rem;white-space:nowrap;
   background:var(--s2);position:relative;
 }
 .flow-node.hi{border-color:var(--hi);color:var(--hi)}
 .flow-node.ok{border-color:#00c853;color:#00c853}
 .flow-node.warn{border-color:var(--amber);color:var(--amber)}
 .flow-arrow{
-  color:var(--muted);padding:0 0.4rem;font-size:0.7rem;flex:1;text-align:center;
+  color:var(--muted);padding:0 0.4rem;font-size:0.83rem;flex:1;text-align:center;
 }
 .flow-note{
-  font-size:0.62rem;color:var(--muted);margin-top:0.3rem;
+  font-size:0.87rem;color:var(--muted);margin-top:0.3rem;
   padding-left:0.8rem;border-left:2px solid var(--border);
   margin-bottom:1rem;
 }
@@ -320,16 +322,16 @@ h2{
 }
 .metric:last-child{border-right:none}
 .metric-val{font-size:1.1rem;font-weight:700;color:var(--hi)}
-.metric-lbl{font-size:0.6rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem}
+.metric-lbl{font-size:0.74rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem}
 
 .ai-text .s-label{margin-top:0}
-.ai-text p{color:var(--muted);font-size:0.92rem;line-height:1.8;margin-bottom:1.2rem}
+.ai-text p{color:var(--muted);font-size:1.02rem;line-height:1.8;margin-bottom:1.2rem}
 
 .stack-grid{
   display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.5rem;
 }
 .stack-tag{
-  font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;
+  font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.08em;
   text-transform:uppercase;color:var(--muted);
   border:1px solid var(--border);padding:0.3rem 0.7rem;
   transition:border-color 0.15s,color 0.15s;
@@ -362,27 +364,27 @@ h2{
   transition:width 1.2s ease;
 }
 .proc-step.visible .proc-bar-fill{width:100%}
-.proc-step h3{font-size:0.95rem;font-weight:700;margin-bottom:0.6rem;letter-spacing:-0.01em}
-.proc-step p{color:var(--muted);font-size:0.82rem;line-height:1.7}
+.proc-step h3{font-size:1.05rem;font-weight:700;margin-bottom:0.6rem;letter-spacing:-0.01em}
+.proc-step p{color:var(--muted);font-size:1.02rem;line-height:1.7}
 
 /* ─── ABOUT ─── */
 .about-wrap{display:grid;grid-template-columns:5fr 4fr;gap:5rem;align-items:start}
 
-.about-text p{color:var(--muted);font-size:0.93rem;line-height:1.85;margin-bottom:1.1rem}
+.about-text p{color:var(--muted);font-size:1.02rem;line-height:1.85;margin-bottom:1.1rem}
 
 .about-card{
   border:1px solid var(--border);overflow:hidden;
 }
 .about-card-header{
   background:var(--s2);padding:0.8rem 1rem;
-  font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);
+  font-family:var(--font-mono);font-size:0.9rem;color:var(--muted);
   letter-spacing:0.12em;text-transform:uppercase;
   border-bottom:1px solid var(--border);
   display:flex;justify-content:space-between;
 }
 .about-card-header span{color:var(--hi)}
 .about-card-body{padding:1.6rem}
-.about-card-body p{color:var(--muted);font-size:0.85rem;line-height:1.75;margin-bottom:1rem}
+.about-card-body p{color:var(--muted);font-size:0.96rem;line-height:1.75;margin-bottom:1rem}
 .about-card-body p:last-child{margin-bottom:0}
 
 /* ─── CONTACT ─── */
@@ -395,7 +397,7 @@ h2{
 }
 .contact-box-header{
   background:var(--s2);padding:0.8rem 1rem;
-  font-size:0.65rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;
+  font-size:0.9rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;gap:0.6rem;text-align:left;
 }
@@ -406,9 +408,9 @@ h2{
   padding:1rem 0;border-bottom:1px solid var(--border);
 }
 .contact-row:last-child{border-bottom:none}
-.c-key{font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
+.c-key{font-size:0.83rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
 .c-val{
-  color:var(--text);font-size:0.85rem;text-decoration:none;
+  color:var(--text);font-size:0.96rem;text-decoration:none;
   transition:color 0.15s;
 }
 .c-val:hover{color:var(--hi)}
@@ -420,10 +422,10 @@ footer{
   background:var(--s1);
   padding:1.8rem 5%;
   display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--font-mono);font-size:0.68rem;
+  font-family:var(--font-mono);font-size:0.8rem;
   color:var(--muted);letter-spacing:0.08em;
 }
-footer .logo{color:var(--hi);font-size:0.85rem;font-weight:700}
+footer .logo{color:var(--hi);font-size:0.96rem;font-weight:700}
 footer .right{display:flex;gap:2rem}
 
 /* ─── COUNTER ─── */
@@ -680,20 +682,20 @@ footer .right{display:flex;gap:2rem}
       <div class="s-label">About</div>
       <h2>One person.<br/><span class="h2-outline">Full ownership.</span></h2>
       <p>
-        t2it is a single-practitioner operation. That's intentional.
-        When you engage with t2it, the person you talk to in the first call is
-        the same one who designs the architecture, writes the config files,
-        and shows up when something breaks.
+        t2it is a lean, independent operation. That's intentional.
+        When you engage with us, the people you talk to in the first call are
+        the same ones who design the architecture, write the config files,
+        and show up when something breaks.
       </p>
       <p>
-        The work spans the full IT stack because real problems don't respect
+        We cover the full IT stack because real problems don't respect
         service categories. A proper AI deployment needs the right hardware,
         the right network topology, the right access model, and the right
-        tooling — handled by someone who understands how each layer affects
+        tooling — handled by people who understand how each layer affects
         the others.
       </p>
       <p>
-        The current focus areas are private AI infrastructure and IT
+        Our current focus areas are private AI infrastructure and IT
         modernisation for organisations where control and data sovereignty matter.
       </p>
       <div class="stack-grid" style="margin-top:1.5rem">
@@ -715,7 +717,7 @@ footer .right{display:flex;gap:2rem}
     <div>
       <div class="about-card">
         <div class="about-card-header">
-          <span>t2it.info</span>
+          <span>t2it.org</span>
           <span>v1.0</span>
         </div>
         <div class="about-card-body">
@@ -732,8 +734,8 @@ footer .right{display:flex;gap:2rem}
           </p>
           <p>
             <strong style="color:var(--text)">What makes it different?</strong><br/>
-            The combination of consulting-level thinking and hands-on delivery
-            in a single person. No upselling. No bloated projects.
+            Consulting-level thinking combined with hands-on delivery —
+            no upselling, no bloated projects.
             Scope that matches what you actually need.
           </p>
         </div>
@@ -769,7 +771,7 @@ footer .right{display:flex;gap:2rem}
         </div>
         <div class="contact-row">
           <span class="c-key">Response</span>
-          <span class="c-val hi">Usually same day</span>
+          <span class="c-val hi">Fast turnaround</span>
         </div>
       </div>
     </div>
