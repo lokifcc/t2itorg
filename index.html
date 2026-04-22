@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>t2it — IT Systems & AI Engineering</title>
+<meta name="description" content="IT consulting, infrastructure, and private AI deployments. t2it builds systems that actually work."/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#080808;
+  --s1:#0f0f0f;
+  --s2:#141414;
+  --s3:#1a1a1a;
+  --hi:#c8ff00;        /* electric lime */
+  --hi2:#ff3c3c;       /* hot red */
+  --hi3:#00e5ff;       /* cyan */
+  --amber:#ffb938;     /* terminal amber */
+  --text:#ebebeb;
+  --muted:#555;
+  --border:#222;
+  --font-mono:'Courier New',monospace;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Segoe UI',system-ui,sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ─── CURSOR ─── */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--hi);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transition:transform 0.1s,background 0.2s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(200,255,0,0.4);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transition:transform 0.18s ease,width 0.2s,height 0.2s,opacity 0.2s;
+}
+body:hover #cursor{transform:translate(-50%,-50%)}
+body:hover #cursor-ring{transform:translate(-50%,-50%)}
+a,button{cursor:none}
+
+/* ─── NOISE ─── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;opacity:0.4;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 5%;
+  mix-blend-mode:normal;
+}
+nav::after{
+  content:'';position:absolute;bottom:0;left:5%;right:5%;
+  height:1px;background:var(--border);
+}
+.nav-logo{
+  font-family:var(--font-mono);font-size:1.1rem;font-weight:700;
+  color:var(--hi);text-decoration:none;letter-spacing:0.08em;
+}
+.nav-logo span{color:var(--muted)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:0.78rem;
+  font-family:var(--font-mono);letter-spacing:0.1em;text-transform:uppercase;
+  transition:color 0.15s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+  background:var(--hi);transition:width 0.2s;
+}
+.nav-links a:hover{color:var(--hi)}
+.nav-links a:hover::after{width:100%}
+.nav-btn{
+  font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--bg);background:var(--hi);
+  padding:0.6rem 1.4rem;text-decoration:none;
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+  transition:background 0.15s;
+}
+.nav-btn:hover{background:#d4ff00}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;display:grid;
+  grid-template-columns:1fr 1fr;
+  padding:10rem 5% 6rem;
+  position:relative;overflow:hidden;gap:4rem;align-items:center;
+}
+
+.hero-scan{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 2px,rgba(255,255,255,0.012) 2px,rgba(255,255,255,0.012) 4px
+  );pointer-events:none;z-index:2;
+}
+
+.hero-left{position:relative;z-index:3}
+
+.hero-eyebrow{
+  font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.8rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-eyebrow::before{content:'//';color:var(--hi);font-weight:700}
+
+.hero h1{
+  font-size:clamp(3rem,7vw,6.5rem);
+  font-weight:900;line-height:0.92;
+  letter-spacing:-0.04em;
+  text-transform:uppercase;
+  margin-bottom:2rem;
+}
+.hero h1 .line2{
+  display:block;
+  -webkit-text-stroke:1px var(--text);
+  color:transparent;
+}
+.hero h1 .hi{color:var(--hi)}
+
+.hero-sub{
+  color:var(--muted);font-size:0.95rem;line-height:1.8;
+  max-width:420px;margin-bottom:2.5rem;
+  border-left:2px solid var(--border);padding-left:1.2rem;
+}
+
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+
+.btn-main{
+  font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--bg);background:var(--hi);
+  padding:0.9rem 2rem;text-decoration:none;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  transition:background 0.15s;display:inline-flex;align-items:center;gap:0.5rem;
+}
+.btn-main:hover{background:#d4ff00}
+.btn-ghost{
+  font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text);
+  border:1px solid var(--border);
+  padding:0.9rem 2rem;text-decoration:none;
+  transition:border-color 0.15s,color 0.15s;
+  display:inline-flex;align-items:center;gap:0.5rem;
+}
+.btn-ghost:hover{border-color:var(--hi);color:var(--hi)}
+
+/* ─── TERMINAL ─── */
+.hero-right{position:relative;z-index:3}
+
+.terminal{
+  background:#0a0a0a;
+  border:1px solid var(--border);
+  border-top:2px solid var(--hi);
+  font-family:var(--font-mono);font-size:0.8rem;
+  overflow:hidden;
+}
+.term-bar{
+  background:var(--s2);padding:0.6rem 1rem;
+  display:flex;align-items:center;gap:0.5rem;
+  border-bottom:1px solid var(--border);
+}
+.term-dot{width:9px;height:9px;border-radius:50%}
+.td-r{background:#ff3c3c}.td-y{background:#ffb938}.td-g{background:#00c853}
+.term-title{
+  font-size:0.7rem;color:var(--muted);margin-left:0.5rem;letter-spacing:0.1em;
+}
+.term-body{padding:1.4rem;line-height:1.8;min-height:340px}
+.term-line{display:block;white-space:pre}
+.t-prompt{color:var(--hi)}
+.t-cmd{color:var(--text)}
+.t-comment{color:#444}
+.t-out{color:var(--amber)}
+.t-ok{color:#00c853}
+.t-err{color:var(--hi2)}
+.t-cyan{color:var(--hi3)}
+.cursor-blink{
+  display:inline-block;width:8px;height:14px;
+  background:var(--hi);vertical-align:middle;
+  animation:blink 1s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ─── TICKER ─── */
+.ticker{
+  overflow:hidden;border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:var(--s1);padding:0.9rem 0;
+  position:relative;z-index:3;
+}
+.ticker-inner{
+  display:flex;gap:0;
+  animation:ticker 28s linear infinite;
+  white-space:nowrap;
+}
+.ticker-inner:hover{animation-play-state:paused}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--muted);padding:0 2.5rem;
+  display:inline-flex;align-items:center;gap:0.8rem;
+}
+.tick-item::before{content:'◆';color:var(--hi);font-size:0.5rem}
+
+/* ─── SECTION WRAPPER ─── */
+.section{padding:7rem 5%}
+.section.dark{background:var(--s1)}
+
+.s-label{
+  font-family:var(--font-mono);font-size:0.7rem;color:var(--hi);
+  letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.8rem;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.s-label::before{content:'[';color:var(--muted)}
+.s-label::after{content:']';color:var(--muted)}
+
+h2{
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;line-height:1.05;letter-spacing:-0.03em;
+  text-transform:uppercase;margin-bottom:1rem;
+}
+.h2-outline{
+  -webkit-text-stroke:1px var(--text);
+  color:transparent;
+}
+.section-sub{color:var(--muted);font-size:0.95rem;line-height:1.75;max-width:480px}
+
+/* ─── SERVICES ─── */
+.srv-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+  margin-top:4rem;
+}
+.srv-card{
+  background:var(--bg);padding:2.2rem;
+  position:relative;overflow:hidden;
+  transition:background 0.2s;
+}
+.srv-card::before{
+  content:'';position:absolute;top:0;left:0;width:2px;height:0;
+  background:var(--hi);transition:height 0.3s;
+}
+.srv-card:hover{background:var(--s2)}
+.srv-card:hover::before{height:100%}
+.srv-num{
+  font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);
+  letter-spacing:0.1em;margin-bottom:1.2rem;
+}
+.srv-card h3{font-size:1.05rem;font-weight:700;margin-bottom:0.7rem;letter-spacing:-0.02em}
+.srv-card p{color:var(--muted);font-size:0.85rem;line-height:1.7}
+.srv-tag{
+  display:inline-block;margin-top:1.2rem;
+  font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--hi);
+  border:1px solid rgba(200,255,0,0.25);padding:0.25rem 0.6rem;
+}
+
+/* ─── AI SECTION ─── */
+.ai-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6rem;align-items:center;
+}
+
+.ai-diagram{position:relative}
+
+.diagram-box{
+  border:1px solid var(--border);
+  font-family:var(--font-mono);font-size:0.75rem;
+}
+.diag-header{
+  background:var(--s2);padding:0.7rem 1rem;
+  font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.diag-status{color:var(--hi);font-size:0.6rem}
+.diag-body{padding:1.6rem}
+
+.flow-row{
+  display:flex;align-items:center;gap:0;margin-bottom:1rem;
+}
+.flow-node{
+  border:1px solid var(--border);padding:0.5rem 0.8rem;
+  font-size:0.7rem;white-space:nowrap;
+  background:var(--s2);position:relative;
+}
+.flow-node.hi{border-color:var(--hi);color:var(--hi)}
+.flow-node.ok{border-color:#00c853;color:#00c853}
+.flow-node.warn{border-color:var(--amber);color:var(--amber)}
+.flow-arrow{
+  color:var(--muted);padding:0 0.4rem;font-size:0.7rem;flex:1;text-align:center;
+}
+.flow-note{
+  font-size:0.62rem;color:var(--muted);margin-top:0.3rem;
+  padding-left:0.8rem;border-left:2px solid var(--border);
+  margin-bottom:1rem;
+}
+.diag-divider{height:1px;background:var(--border);margin:1rem 0}
+
+.metric-row{display:flex;gap:0;border-top:1px solid var(--border)}
+.metric{
+  flex:1;padding:1rem;text-align:center;
+  border-right:1px solid var(--border);
+}
+.metric:last-child{border-right:none}
+.metric-val{font-size:1.1rem;font-weight:700;color:var(--hi)}
+.metric-lbl{font-size:0.6rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem}
+
+.ai-text .s-label{margin-top:0}
+.ai-text p{color:var(--muted);font-size:0.92rem;line-height:1.8;margin-bottom:1.2rem}
+
+.stack-grid{
+  display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.5rem;
+}
+.stack-tag{
+  font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--border);padding:0.3rem 0.7rem;
+  transition:border-color 0.15s,color 0.15s;
+}
+.stack-tag:hover{border-color:var(--hi);color:var(--hi)}
+
+/* ─── PROCESS ─── */
+.proc-track{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;border:1px solid var(--border);margin-top:4rem;
+  background:var(--border);
+}
+.proc-step{
+  background:var(--bg);padding:2rem;position:relative;
+  border-right:1px solid var(--border);
+}
+.proc-step:last-child{border-right:none}
+.proc-step::after{
+  content:attr(data-n);
+  position:absolute;bottom:1.5rem;right:1.5rem;
+  font-family:var(--font-mono);font-size:3.5rem;font-weight:900;
+  color:rgba(255,255,255,0.03);letter-spacing:-0.04em;
+  line-height:1;
+}
+.proc-bar{
+  height:2px;background:var(--border);margin-bottom:1.8rem;position:relative;
+}
+.proc-bar-fill{
+  height:100%;background:var(--hi);width:0;
+  transition:width 1.2s ease;
+}
+.proc-step.visible .proc-bar-fill{width:100%}
+.proc-step h3{font-size:0.95rem;font-weight:700;margin-bottom:0.6rem;letter-spacing:-0.01em}
+.proc-step p{color:var(--muted);font-size:0.82rem;line-height:1.7}
+
+/* ─── ABOUT ─── */
+.about-wrap{display:grid;grid-template-columns:5fr 4fr;gap:5rem;align-items:start}
+
+.about-text p{color:var(--muted);font-size:0.93rem;line-height:1.85;margin-bottom:1.1rem}
+
+.about-card{
+  border:1px solid var(--border);overflow:hidden;
+}
+.about-card-header{
+  background:var(--s2);padding:0.8rem 1rem;
+  font-family:var(--font-mono);font-size:0.65rem;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;
+}
+.about-card-header span{color:var(--hi)}
+.about-card-body{padding:1.6rem}
+.about-card-body p{color:var(--muted);font-size:0.85rem;line-height:1.75;margin-bottom:1rem}
+.about-card-body p:last-child{margin-bottom:0}
+
+/* ─── CONTACT ─── */
+.contact-wrap{max-width:680px;margin:0 auto;text-align:center}
+.contact-wrap .section-sub{margin:1rem auto 3rem;text-align:center}
+
+.contact-box{
+  border:1px solid var(--border);
+  font-family:var(--font-mono);
+}
+.contact-box-header{
+  background:var(--s2);padding:0.8rem 1rem;
+  font-size:0.65rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:0.6rem;text-align:left;
+}
+.contact-box-header::before{content:'>';color:var(--hi)}
+.contact-box-body{padding:2rem;text-align:left}
+.contact-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 0;border-bottom:1px solid var(--border);
+}
+.contact-row:last-child{border-bottom:none}
+.c-key{font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
+.c-val{
+  color:var(--text);font-size:0.85rem;text-decoration:none;
+  transition:color 0.15s;
+}
+.c-val:hover{color:var(--hi)}
+.c-val.hi{color:var(--hi)}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);
+  background:var(--s1);
+  padding:1.8rem 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--font-mono);font-size:0.68rem;
+  color:var(--muted);letter-spacing:0.08em;
+}
+footer .logo{color:var(--hi);font-size:0.85rem;font-weight:700}
+footer .right{display:flex;gap:2rem}
+
+/* ─── COUNTER ─── */
+.counter{display:inline-block}
+
+/* ─── MOBILE ─── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:8rem 5% 4rem}
+  .hero-right{display:none}
+  .srv-grid{grid-template-columns:1fr 1fr}
+  .ai-wrap,.about-wrap{grid-template-columns:1fr;gap:3rem}
+  .proc-track{grid-template-columns:1fr 1fr}
+  nav .nav-links{display:none}
+  .proc-step{border-right:none;border-bottom:1px solid var(--border)}
+}
+@media(max-width:580px){
+  .srv-grid,.proc-track{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:1rem;text-align:center}
+  footer .right{flex-direction:column;gap:0.5rem;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">t2it<span>.org</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#ai">Local AI</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Get in Touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-scan"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">IT Consulting &amp; AI Engineering</div>
+    <h1>
+      Systems<br/>
+      <span class="line2">Built to</span><br/>
+      <span class="hi">Last.</span>
+    </h1>
+    <p class="hero-sub">
+      Infrastructure, automation, and private AI deployments —
+      designed hands-on, without the agency overhead.
+      From bare metal to intelligent workflows.
+    </p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-main">&#x25B6; Explore</a>
+      <a href="#contact" class="btn-ghost">&#x2197; Talk to us</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="terminal">
+      <div class="term-bar">
+        <div class="term-dot td-r"></div>
+        <div class="term-dot td-y"></div>
+        <div class="term-dot td-g"></div>
+        <span class="term-title">t2it-system-init</span>
+      </div>
+      <div class="term-body" id="term-output">
+        <span class="cursor-blink" id="hero-cursor"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner" id="ticker-inner"></div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="s-label">Services</div>
+  <h2>We do <span class="h2-outline">the whole stack</span></h2>
+  <p class="section-sub">No referrals, no subcontracting. One point of contact from first brief to live system.</p>
+
+  <div class="srv-grid">
+    <div class="srv-card">
+      <div class="srv-num">01 — CONSULTING</div>
+      <h3>IT Strategy &amp; Architecture</h3>
+      <p>Audit of your current environment, gap analysis, and a clear technical roadmap. Decisions grounded in what you actually need, not what's trendy.</p>
+      <span class="srv-tag">Architecture Review</span>
+    </div>
+    <div class="srv-card">
+      <div class="srv-num">02 — AI</div>
+      <h3>Private AI Systems</h3>
+      <p>Self-hosted language models, RAG pipelines, and AI-assisted tooling — entirely on your infrastructure, with zero data leaving your network.</p>
+      <span class="srv-tag">Local LLM</span>
+    </div>
+    <div class="srv-card">
+      <div class="srv-num">03 — INFRA</div>
+      <h3>Infrastructure &amp; Cloud</h3>
+      <p>Servers, virtualisation, containers, cloud migration. Hybrid setups that scale without surprise bills or opaque dependencies.</p>
+      <span class="srv-tag">Hybrid Cloud</span>
+    </div>
+    <div class="srv-card">
+      <div class="srv-num">04 — AUTOMATION</div>
+      <h3>DevOps &amp; Automation</h3>
+      <p>CI/CD pipelines, IaC, monitoring, and AI-augmented ops. Cut the repetitive work so your team focuses on things that matter.</p>
+      <span class="srv-tag">IaC / CI-CD</span>
+    </div>
+    <div class="srv-card">
+      <div class="srv-num">05 — SECURITY</div>
+      <h3>Hardening &amp; Compliance</h3>
+      <p>Zero-trust network design, access policy, encryption at rest and in transit. Especially relevant when private AI carries sensitive workloads.</p>
+      <span class="srv-tag">Zero Trust</span>
+    </div>
+    <div class="srv-card">
+      <div class="srv-num">06 — NETWORK</div>
+      <h3>Network &amp; Connectivity</h3>
+      <p>Enterprise LAN/WAN, SD-WAN, VPN, multi-site setups. Reliable connectivity as the foundation everything else runs on.</p>
+      <span class="srv-tag">SD-WAN / VPN</span>
+    </div>
+  </div>
+</section>
+
+<!-- AI -->
+<section class="section dark" id="ai">
+  <div class="ai-wrap">
+    <div class="ai-diagram">
+      <div class="diagram-box">
+        <div class="diag-header">
+          <span>local-ai-stack // deployment diagram</span>
+          <span class="diag-status">● ACTIVE</span>
+        </div>
+        <div class="diag-body">
+          <div class="flow-row">
+            <div class="flow-node hi">User / App</div>
+            <div class="flow-arrow">──────&gt;</div>
+            <div class="flow-node ok">API Gateway</div>
+            <div class="flow-arrow">──────&gt;</div>
+            <div class="flow-node hi">LLM Engine</div>
+          </div>
+          <div class="flow-note">All traffic stays within your subnet — no external calls</div>
+
+          <div class="diag-divider"></div>
+
+          <div class="flow-row">
+            <div class="flow-node warn">Document Store</div>
+            <div class="flow-arrow">──&gt;</div>
+            <div class="flow-node ok">Embeddings</div>
+            <div class="flow-arrow">──&gt;</div>
+            <div class="flow-node ok">Vector DB</div>
+            <div class="flow-arrow">──&gt;</div>
+            <div class="flow-node hi">RAG</div>
+          </div>
+          <div class="flow-note">Retrieval-augmented generation on your own documents</div>
+
+          <div class="diag-divider"></div>
+
+          <div class="flow-row">
+            <div class="flow-node">Auth / LDAP</div>
+            <div class="flow-arrow">──&gt;</div>
+            <div class="flow-node ok">Role Policy</div>
+            <div class="flow-arrow">──&gt;</div>
+            <div class="flow-node ok">Audit Log</div>
+          </div>
+          <div class="flow-note">Access control and full audit trail out of the box</div>
+        </div>
+        <div class="metric-row">
+          <div class="metric">
+            <div class="metric-val">0 ms</div>
+            <div class="metric-lbl">Cloud RTT</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">100%</div>
+            <div class="metric-lbl">Data Ownership</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">Air-gap</div>
+            <div class="metric-lbl">Capable</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-text">
+      <div class="s-label">Local AI</div>
+      <h2>AI inside<br/><span class="h2-outline">your walls.</span></h2>
+      <p>
+        Cloud AI is convenient — until it isn't. Sensitive documents, customer data,
+        internal processes: none of that should travel to a third-party server.
+        We build local AI stacks that give you everything a hosted solution offers,
+        without the compliance exposure.
+      </p>
+      <p>
+        That means choosing the right open model for your hardware, configuring
+        retrieval over your own data, wiring up the interfaces your team will
+        actually use, and handing you full operational control.
+      </p>
+      <div class="stack-grid">
+        <span class="stack-tag">Ollama</span>
+        <span class="stack-tag">vLLM</span>
+        <span class="stack-tag">Open-WebUI</span>
+        <span class="stack-tag">LM Studio</span>
+        <span class="stack-tag">Llama 3</span>
+        <span class="stack-tag">Mistral</span>
+        <span class="stack-tag">Phi-3</span>
+        <span class="stack-tag">LangChain</span>
+        <span class="stack-tag">ChromaDB</span>
+        <span class="stack-tag">Qdrant</span>
+        <span class="stack-tag">GPU Cluster</span>
+        <span class="stack-tag">CUDA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" id="process">
+  <div class="s-label">Process</div>
+  <h2><span class="h2-outline">How</span> we work</h2>
+  <p class="section-sub">Direct, documented, no black-box phases.</p>
+
+  <div class="proc-track">
+    <div class="proc-step" data-n="01">
+      <div class="proc-bar"><div class="proc-bar-fill"></div></div>
+      <h3>Discovery</h3>
+      <p>We map your current environment, constraints, and goals — no assumptions, no templates. The brief determines the architecture.</p>
+    </div>
+    <div class="proc-step" data-n="02">
+      <div class="proc-bar"><div class="proc-bar-fill"></div></div>
+      <h3>Blueprint</h3>
+      <p>A written technical specification you approve before implementation begins. What gets built, how, and why — documented upfront.</p>
+    </div>
+    <div class="proc-step" data-n="03">
+      <div class="proc-bar"><div class="proc-bar-fill"></div></div>
+      <h3>Build</h3>
+      <p>Hands-on implementation: infrastructure provisioned, systems integrated, AI deployed. Tested against real-world conditions, not staging assumptions.</p>
+    </div>
+    <div class="proc-step" data-n="04">
+      <div class="proc-bar"><div class="proc-bar-fill"></div></div>
+      <h3>Handover</h3>
+      <p>Full runbooks, access credentials, and a working session for your team. You own it completely — continued support is optional, not mandatory.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section dark" id="about">
+  <div class="about-wrap">
+    <div class="about-text">
+      <div class="s-label">About</div>
+      <h2>One person.<br/><span class="h2-outline">Full ownership.</span></h2>
+      <p>
+        t2it is a single-practitioner operation. That's intentional.
+        When you engage with t2it, the person you talk to in the first call is
+        the same one who designs the architecture, writes the config files,
+        and shows up when something breaks.
+      </p>
+      <p>
+        The work spans the full IT stack because real problems don't respect
+        service categories. A proper AI deployment needs the right hardware,
+        the right network topology, the right access model, and the right
+        tooling — handled by someone who understands how each layer affects
+        the others.
+      </p>
+      <p>
+        The current focus areas are private AI infrastructure and IT
+        modernisation for organisations where control and data sovereignty matter.
+      </p>
+      <div class="stack-grid" style="margin-top:1.5rem">
+        <span class="stack-tag">Linux</span>
+        <span class="stack-tag">Windows Server</span>
+        <span class="stack-tag">VMware / Proxmox</span>
+        <span class="stack-tag">Docker</span>
+        <span class="stack-tag">Kubernetes</span>
+        <span class="stack-tag">Ansible</span>
+        <span class="stack-tag">Terraform</span>
+        <span class="stack-tag">Networking</span>
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Bash</span>
+        <span class="stack-tag">AI / LLM</span>
+        <span class="stack-tag">Security</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="about-card">
+        <div class="about-card-header">
+          <span>t2it.info</span>
+          <span>v1.0</span>
+        </div>
+        <div class="about-card-body">
+          <p>
+            <strong style="color:var(--hi)">Why "t2it"?</strong><br/>
+            The name is a shorthand for the core promise: taking any IT challenge
+            — straight through to a working solution. No detours, no layers.
+          </p>
+          <p>
+            <strong style="color:var(--text)">Who is this for?</strong><br/>
+            SMEs modernising outdated infrastructure. Organisations that need
+            AI capabilities but can't send their data to a cloud provider.
+            Teams burned by agencies that sold strategy and disappeared before delivery.
+          </p>
+          <p>
+            <strong style="color:var(--text)">What makes it different?</strong><br/>
+            The combination of consulting-level thinking and hands-on delivery
+            in a single person. No upselling. No bloated projects.
+            Scope that matches what you actually need.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="contact-wrap">
+    <div class="s-label" style="justify-content:center">Contact</div>
+    <h2>Start with <span class="h2-outline">a conversation.</span></h2>
+    <p class="section-sub">
+      Describe your situation — infrastructure, AI, or both.
+      No pitch, no proposal before we've actually talked.
+    </p>
+
+    <div class="contact-box">
+      <div class="contact-box-header">t2it.org — reach out</div>
+      <div class="contact-box-body">
+        <div class="contact-row">
+          <span class="c-key">Email</span>
+          <a href="mailto:info@t2it.org" class="c-val">info@t2it.org</a>
+        </div>
+        <div class="contact-row">
+          <span class="c-key">Domain</span>
+          <span class="c-val">t2it.org</span>
+        </div>
+        <div class="contact-row">
+          <span class="c-key">Scope</span>
+          <span class="c-val">IT Consulting, Infrastructure, Private AI</span>
+        </div>
+        <div class="contact-row">
+          <span class="c-key">Response</span>
+          <span class="c-val hi">Usually same day</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="mailto:info@t2it.org" class="btn-main" style="margin-top:2rem;display:inline-flex">
+      &#x2197; Send a Message
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="logo">t2it.org</span>
+  <span>Tailored IT. Powered by Intelligence.</span>
+  <div class="right">
+    <span>&copy; 2026 t2it</span>
+    <a href="#" style="color:var(--muted);text-decoration:none">&#x2191; Back to top</a>
+  </div>
+</footer>
+
+<script>
+/* ─── CURSOR ─── */
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    ring.style.width='54px';ring.style.height='54px';
+    ring.style.borderColor='rgba(200,255,0,0.7)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    ring.style.width='36px';ring.style.height='36px';
+    ring.style.borderColor='rgba(200,255,0,0.4)';
+  });
+});
+
+/* ─── TERMINAL ─── */
+const lines=[
+  {t:'prompt', text:'t2it@node-01:~$ '},
+  {t:'cmd',    text:'./init-system.sh --profile=consulting', delay:40},
+  {t:'out',    text:'\n[  0.001] kernel: loading modules...'},
+  {t:'out',    text:'[  0.024] net: interface eth0 UP  192.168.10.5'},
+  {t:'out',    text:'[  0.038] docker: daemon started'},
+  {t:'out',    text:'[  0.102] ollama: model llama3:70b  ✓ loaded'},
+  {t:'out',    text:'[  0.215] rag: vector index /data/docs  ✓ ready'},
+  {t:'out',    text:'[  0.318] api: gateway listening :8080'},
+  {t:'ok',     text:'[  0.319] system: all services nominal'},
+  {t:'prompt', text:'\nt2it@node-01:~$ '},
+  {t:'cmd',    text:'uptime', delay:40},
+  {t:'out',    text:' 23:41:07 up 142 days, 7:12  — 0 incidents'},
+  {t:'prompt', text:'\nt2it@node-01:~$ '},
+  {t:'cmd',    text:'cat /etc/motd', delay:40},
+  {t:'cyan',   text:'\n  ████████╗██████╗ ██╗████████╗'},
+  {t:'cyan',   text:'     ██╔══╝╚════██╗██║╚══██╔══╝'},
+  {t:'cyan',   text:'     ██║    █████╔╝██║   ██║   '},
+  {t:'cyan',   text:'     ██║   ██╔═══╝ ██║   ██║   '},
+  {t:'cyan',   text:'     ██║   ███████╗██║   ██║   '},
+  {t:'cyan',   text:'     ╚═╝   ╚══════╝╚═╝   ╚═╝   '},
+  {t:'out',    text:'\n  Tailored IT. Powered by Intelligence.\n'},
+];
+
+const out=document.getElementById('term-output');
+const heroCursor=document.getElementById('hero-cursor');
+
+async function typeTerminal(){
+  for(const line of lines){
+    if(line.t==='cmd'){
+      const span=document.createElement('span');
+      span.className='term-line t-cmd';
+      out.insertBefore(span,heroCursor);
+      for(const ch of line.text){
+        span.textContent+=ch;
+        await sleep(line.delay||0);
+      }
+    } else {
+      const span=document.createElement('span');
+      span.className='term-line t-'+line.t;
+      span.textContent=line.text;
+      out.insertBefore(span,heroCursor);
+    }
+    await sleep(line.t==='cmd'?180:60);
+    out.scrollTop=out.scrollHeight;
+  }
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+setTimeout(typeTerminal, 800);
+
+/* ─── TICKER ─── */
+const techs=['Linux','Windows Server','Proxmox','VMware','Docker','Kubernetes',
+  'Ansible','Terraform','Python','Bash','Ollama','vLLM','LangChain','Qdrant',
+  'ChromaDB','Open-WebUI','Nginx','PostgreSQL','Redis','Grafana','Prometheus',
+  'WireGuard','pfSense','SD-WAN','Zero Trust','CI/CD'];
+const inner=document.getElementById('ticker-inner');
+[...techs,...techs].forEach(t=>{
+  const d=document.createElement('span');
+  d.className='tick-item';d.textContent=t;
+  inner.appendChild(d);
+});
+
+/* ─── PROCESS BAR ANIMATION ─── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.3});
+document.querySelectorAll('.proc-step').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
